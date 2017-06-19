@@ -14,6 +14,7 @@ namespace ObligatorioP3.Models
         public string Organizacion { get; set; }
 
         [Required]
+        [Display(Name = "Monto máximo a financiar")]
         public decimal MontoMax { get; set; }
 
         public virtual List<Emprendimiento> Emprendimientos { get; set; }
