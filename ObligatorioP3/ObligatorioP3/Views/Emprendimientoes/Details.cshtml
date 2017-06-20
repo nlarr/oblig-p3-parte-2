@@ -1,0 +1,59 @@
+﻿@model ObligatorioP3.Models.Emprendimiento
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Emprendimiento</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Titulo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Titulo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Costo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Costo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Tiempo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Tiempo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PuntajeTotal)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PuntajeTotal)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    <!--Pendiente: condiciones para financiar: usuario loggueado como financiador y monto accesible-->
+    @Html.ActionLink("Financiar!", "Financiar", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

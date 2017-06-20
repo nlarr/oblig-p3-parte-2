@@ -156,6 +156,8 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\EmprendimientoesController.cs" />
+    <Compile Include="Controllers\FinanciadorsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
@@ -164,6 +166,14 @@
     <Compile Include="Migrations\201706191628409_CreacionBD.cs" />
     <Compile Include="Migrations\201706191628409_CreacionBD.Designer.cs">
       <DependentUpon>201706191628409_CreacionBD.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706192042203_AgregarDuracionEmpr.cs" />
+    <Compile Include="Migrations\201706192042203_AgregarDuracionEmpr.Designer.cs">
+      <DependentUpon>201706192042203_AgregarDuracionEmpr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706192106361_RemoverDuracion.cs" />
+    <Compile Include="Migrations\201706192106361_RemoverDuracion.Designer.cs">
+      <DependentUpon>201706192106361_RemoverDuracion.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Emprendimiento.cs" />
@@ -187,6 +197,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="ArchivoTexto\WCFarchivo.log" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -214,6 +225,11 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Usuario\Login.cshtml" />
+    <Content Include="Views\Emprendimientoes\Details.cshtml" />
+    <Content Include="Views\Emprendimientoes\Index.cshtml" />
+    <Content Include="Views\Financiadors\Create.cshtml" />
+    <Content Include="Views\Financiadors\Details.cshtml" />
+    <Content Include="Views\Financiadors\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -229,6 +245,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201706191628409_CreacionBD.resx">
       <DependentUpon>201706191628409_CreacionBD.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706192042203_AgregarDuracionEmpr.resx">
+      <DependentUpon>201706192042203_AgregarDuracionEmpr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706192106361_RemoverDuracion.resx">
+      <DependentUpon>201706192106361_RemoverDuracion.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
