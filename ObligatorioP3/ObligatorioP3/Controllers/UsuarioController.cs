@@ -20,8 +20,26 @@ namespace ObligatorioP3.Controllers
             try
             {
                 using (ObliEmprendimientosContext db = new ObliEmprendimientosContext()) {
-                    var usuario = db.Usuarios.Where(u => u.Email == miUsuario.Email && u.Password == miUsuario.Password);
-                    return View();
+                    //var usuario = db.Usuarios.Where(u => u.Email == miUsuario.Email && u.Password == miUsuario.Password)
+                    //                .Select(u => new {
+                    //                    Email = u.Email,
+                    //                    Rol = u.Rol,
+                    //                    Id =  u.Id
+
+                    //                }).SingleOrDefault();
+                    var usuario = db.Usuarios.Where(u => u.Email == miUsuario.Email && u.Password == miUsuario.Password)
+                                    .SingleOrDefault();
+                    if (usuario.Rol=="Financiador")
+                    {
+                        Financiador f = usuario as Financiador;
+                        Session["usuario"] = f;
+                        return RedirectToAction("Index","Emprendimientoes");
+
+                        //code
+                    }else {
+                        return View();
+                    }
+                    
                 }
                 //return RedirectToAction("Index");
             }

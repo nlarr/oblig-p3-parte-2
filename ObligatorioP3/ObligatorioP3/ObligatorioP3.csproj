@@ -175,6 +175,10 @@
     <Compile Include="Migrations\201706192106361_RemoverDuracion.Designer.cs">
       <DependentUpon>201706192106361_RemoverDuracion.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706202339311_cosaRara.cs" />
+    <Compile Include="Migrations\201706202339311_cosaRara.Designer.cs">
+      <DependentUpon>201706202339311_cosaRara.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Emprendimiento.cs" />
     <Compile Include="Models\Financiador.cs" />
@@ -251,6 +255,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706192106361_RemoverDuracion.resx">
       <DependentUpon>201706192106361_RemoverDuracion.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706202339311_cosaRara.resx">
+      <DependentUpon>201706202339311_cosaRara.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
