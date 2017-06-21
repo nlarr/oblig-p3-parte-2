@@ -94,6 +94,16 @@ namespace ObligatorioP3.Controllers
             return View(emprendimiento);
         }
 
+        public ActionResult SearchIndex(string searchString)
+        {
+            var juegos = from m in db.Emprendimientos select m;
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                juegos = juegos.Where(s => s.Titulo.Contains(searchString));
+            }
+            return View(juegos.ToList());
+        }
+
         // Este método se generó solo, así que por las dudas lo dejo
         protected override void Dispose(bool disposing)
         {
