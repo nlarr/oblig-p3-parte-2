@@ -21,9 +21,22 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Log in", "Login", "Usuario")</li>
-                    <li>@Html.ActionLink("Registrarse", "Create", "Financiadors")</li>
+                    <li>@Html.ActionLink("Inicio", "Index", "Emprendimientoes")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @{
+                        if (Session["Usuario"] != null)
+                        {
+                            ObligatorioP3.Models.Usuario usuario = Session["Usuario"] as ObligatorioP3.Models.Usuario;
+                            <li><p class="navbar-text">@usuario.Email</p></li>
+                            <li>@Html.ActionLink("Log out", "Logout", "Usuario")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Registrarse", "Create", "Financiadors")</li>
+                            <li>@Html.ActionLink("Log in", "Login", "Usuario")</li>
+                        }
+                    }
                 </ul>
             </div>
         </div>
