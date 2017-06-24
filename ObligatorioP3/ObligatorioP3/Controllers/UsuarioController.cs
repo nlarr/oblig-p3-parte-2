@@ -20,35 +20,40 @@ namespace ObligatorioP3.Controllers
         {
             ActionResult ret = View();
             ViewBag.ErrorLogin = "";
-            try
+
+            if (ModelState.IsValid)
             {
-                using (ObliEmprendimientosContext db = new ObliEmprendimientosContext()) {
-
-                    var usuario = db.Usuarios.Where(u => u.Email == miUsuario.Email && u.Password == miUsuario.Password)
-                                    .SingleOrDefault();
-
-                    if (usuario != null) // Si la query trajo algo
+                try
+                {
+                    using (ObliEmprendimientosContext db = new ObliEmprendimientosContext())
                     {
-                        if (usuario.Rol == "Financiador")
-                        {
-                            Financiador f = usuario as Financiador;
 
-                            if (f != null) // Si no falló al intentar el casteo como Financiador
+                        var usuario = db.Usuarios.Where(u => u.Email == miUsuario.Email && u.Password == miUsuario.Password)
+                                        .SingleOrDefault();
+
+                        if (usuario != null) // Si la query trajo algo
+                        {
+                            if (usuario.Rol == "Financiador")
                             {
-                                Session["usuario"] = f;
-                                ret = RedirectToAction("Index", "Emprendimientoes");
+                                Financiador f = usuario as Financiador;
+
+                                if (f != null) // Si no falló al intentar el casteo como Financiador
+                                {
+                                    Session["usuario"] = f;
+                                    ret = RedirectToAction("Index", "Emprendimientoes");
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        ViewBag.ErrorLogin = "Usuario o contraseña inválidos.";
+                        else
+                        {
+                            ViewBag.ErrorLogin = "Usuario o contraseña inválidos.";
+                        }
                     }
                 }
-            }
-            catch (Exception e)
-            {
-                throw;
+                catch (Exception e)
+                {
+                    throw;
+                }
             }
             return ret;
         }
