@@ -23,18 +23,6 @@ namespace ObligatorioP3.ViewModels
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
-
-        
-        //public bool Mapear()
-        //    { if (this.Email != null) {
-                        
-        //                // this.UnLibro.NombreArchivoPortada = Archivo.FileName;
-        //                //EntreLibrosContext db = new EntreLibrosContext();
-        //                //this.UnLibro.MiTema = db.Temas.Find(this.IdTemaSeleccionado);
-        //                return true;
-        //            }
-        //            return false;
-        //        }
      }
     
 }
