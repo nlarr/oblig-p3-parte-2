@@ -12,16 +12,14 @@
         @ViewBag.MensajeInicializar<span>@Html.ActionLink("inicializar la aplicacion", "Inicializar")</span>
     </p>
 }
+
 <table class="table">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Titulo)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Descripcion)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Costo)
+        <th title="Ordenar por Costo">
+            @Html.ActionLink("Costo", "Index", new { sortOrder = ViewBag.CostoSortParm })
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Tiempo)
@@ -36,9 +34,6 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.Titulo)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Descripcion)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Costo)

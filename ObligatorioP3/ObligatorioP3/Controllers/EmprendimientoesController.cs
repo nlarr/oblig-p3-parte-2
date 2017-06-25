@@ -16,16 +16,30 @@ namespace ObligatorioP3.Controllers
         private ObliEmprendimientosContext db = new ObliEmprendimientosContext();
 
         // GET: Emprendimientoes
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder)
         {
-            List <Emprendimiento> emprendimientos = db.Emprendimientos.ToList();
+            var emprendimientos = from e in db.Emprendimientos select e;
 
-            if (emprendimientos.Count == 0)
+            if (emprendimientos.Count() == 0)
             {
                 ViewBag.MensajeInicializar = "No hay emprendimientos en el sistema, es necesario ";
             }
+            else
+            {
+                ViewBag.CostoSortParm = sortOrder == "costo_asc" ? "costo_desc" : "costo_asc";
 
-            return View(db.Emprendimientos.ToList());
+                switch (sortOrder)
+                {
+                    case "costo_asc":
+                        emprendimientos = emprendimientos.OrderBy(e => e.Costo);
+                        break;
+                    case "costo_desc":
+                        emprendimientos = emprendimientos.OrderByDescending(e => e.Costo);
+                        break;
+                }
+            }
+
+            return View(emprendimientos.ToList());
         }
 
         // GET: Emprendimientoes/Details/5
@@ -92,16 +106,6 @@ namespace ObligatorioP3.Controllers
                 return HttpNotFound();
             }
             return View(emprendimiento);
-        }
-
-        public ActionResult SearchIndex(string searchString)
-        {
-            var juegos = from m in db.Emprendimientos select m;
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                juegos = juegos.Where(s => s.Titulo.Contains(searchString));
-            }
-            return View(juegos.ToList());
         }
 
         // Este método se generó solo, así que por las dudas lo dejo
