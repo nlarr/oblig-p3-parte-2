@@ -6,14 +6,44 @@
 
 <h2>Emprendimientos</h2>
 
-@if (Model.Count() == 0)
+@if (ViewBag.MensajeInicializar != "")
 {
     <p class="alert alert-danger">
         @ViewBag.MensajeInicializar<span>@Html.ActionLink("inicializar la aplicacion", "Inicializar")</span>
     </p>
 }
 
-<table class="table">
+    <div class="pull-right" style="margin-top: 10px">
+        @using (Html.BeginForm("Index", "Emprendimientoes",
+                FormMethod.Post, new { @class = "form-inline" }))
+        {
+        <div class="form-group">
+            <label for="costoMin">Costo mínimo:</label>
+            @Html.TextBox("costoMin")
+        </div>
+        <div class="form-group">
+            <label for="costoMax">Costo máximo:</label>
+            @Html.TextBox("costoMax")
+        </div>
+        <div class="form-group">
+            <label for="tiempoMax">Duración máxima:</label>
+            @Html.TextBox("tiempoMax")
+        </div>
+
+        if (Session["Usuario"] != null)
+        {
+        <div class="checkbox">
+            @Html.CheckBox("financiable")
+            <label for="financiable">Financiable por mí</label>
+        </div>
+        }
+
+        <input type="submit" value="Filtrar" class="btn btn-default" />
+        }
+    </div>
+
+<div class="clearfix"></div>
+<table class="table" style="margin-top: 10px">
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Titulo)

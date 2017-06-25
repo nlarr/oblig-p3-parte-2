@@ -16,9 +16,10 @@ namespace ObligatorioP3.Controllers
         private ObliEmprendimientosContext db = new ObliEmprendimientosContext();
 
         // GET: Emprendimientoes
-        public ActionResult Index(string sortOrder)
+        public ActionResult Index(string sortOrder, string costoMin, string costoMax, string tiempoMax, bool? financiable)
         {
             var emprendimientos = from e in db.Emprendimientos select e;
+            ViewBag.MensajeInicializar = "";
 
             if (emprendimientos.Count() == 0)
             {
@@ -26,6 +27,48 @@ namespace ObligatorioP3.Controllers
             }
             else
             {
+                if (!String.IsNullOrEmpty(costoMin))
+                {
+                    decimal costoMinD;
+                    bool costoMinOk = decimal.TryParse(costoMin, out costoMinD);
+                    if (costoMinOk)
+                    {
+                        emprendimientos = emprendimientos.Where(e => e.Costo >= costoMinD);
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(costoMax))
+                {
+                    decimal costoMaxD;
+                    bool costoMaxOk = decimal.TryParse(costoMax, out costoMaxD);
+                    if (costoMaxOk)
+                    {
+                        emprendimientos = emprendimientos.Where(e => e.Costo <= costoMaxD);
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(tiempoMax))
+                {
+                    decimal tiempoMaxD;
+                    bool tiempoMaxOk = decimal.TryParse(tiempoMax, out tiempoMaxD);
+                    if (tiempoMaxOk)
+                    {
+                        emprendimientos = emprendimientos.Where(e => e.Tiempo <= tiempoMaxD);
+                    }
+                }
+
+                if (Session["Usuario"] != null)
+                {
+                    Financiador f = Session["Usuario"] as Financiador;
+                    if (f != null)
+                    {
+                        if (financiable != null && financiable == true)
+                        {
+                            emprendimientos = emprendimientos.Where(e => e.Costo <= f.MontoMax);
+                        }
+                    }
+                }
+
                 ViewBag.CostoSortParm = sortOrder == "costo_asc" ? "costo_desc" : "costo_asc";
 
                 switch (sortOrder)
