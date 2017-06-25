@@ -18,7 +18,7 @@ namespace ObligatorioP3.Controllers
         // GET: Emprendimientoes
         public ActionResult Index(string sortOrder, string costoMin, string costoMax, string tiempoMax, bool? financiable)
         {
-            var emprendimientos = from e in db.Emprendimientos select e;
+            var emprendimientos = from e in db.Emprendimientos.Include("Financiador") select e;
             ViewBag.MensajeInicializar = "";
 
             if (emprendimientos.Count() == 0)
@@ -64,7 +64,7 @@ namespace ObligatorioP3.Controllers
                     {
                         if (financiable != null && financiable == true)
                         {
-                            emprendimientos = emprendimientos.Where(e => e.Costo <= f.MontoMax);
+                            emprendimientos = emprendimientos.Where(e => e.Costo <= f.MontoMax && e.Financiador == null);
                         }
                     }
                 }
