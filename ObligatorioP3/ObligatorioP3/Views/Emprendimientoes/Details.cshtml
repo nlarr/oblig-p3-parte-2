@@ -52,8 +52,30 @@
 
     </dl>
 </div>
+@if (ViewBag.FinanciarSuccess != "")
+{
+    <p class="alert alert-success">
+        @ViewBag.FinanciarSuccess
+    </p>
+}
+else if (ViewBag.FinanciarError != "")
+{
+    <p class="alert alert-danger">
+        @ViewBag.FinanciarError
+    </p>
+}
 <p>
-    <!--Pendiente: condiciones para financiar: usuario loggueado como financiador y monto accesible-->
-    @Html.ActionLink("Financiar!", "Financiar", new { id = Model.Id }) |
     @Html.ActionLink("Back to List", "Index")
-</p>
+    @if (Session["Usuario"] != null)
+    {
+        ObligatorioP3.Models.Financiador financiador = Session["Usuario"] as ObligatorioP3.Models.Financiador;
+
+        if (financiador != null && Model.Financiador == null)
+        {
+            <span> | </span>
+            TempData["emprendimientoId"] = Model.Id;
+            TempData["financiadorId"] = financiador.Id;
+            @Html.ActionLink("Financiar", "Financiar", "Emprendimientoes")
+        }
+    }
+    </p>

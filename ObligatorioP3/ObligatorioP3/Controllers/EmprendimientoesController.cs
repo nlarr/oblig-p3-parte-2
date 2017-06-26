@@ -16,26 +16,90 @@ namespace ObligatorioP3.Controllers
         private ObliEmprendimientosContext db = new ObliEmprendimientosContext();
 
         // GET: Emprendimientoes
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string costoMin, string costoMax, string tiempoMax, bool? financiable)
         {
-            List <Emprendimiento> emprendimientos = db.Emprendimientos.ToList();
+            var emprendimientos = from e in db.Emprendimientos.Include("Financiador") select e;
+            ViewBag.MensajeInicializar = "";
 
-            if (emprendimientos.Count == 0)
+            if (emprendimientos.Count() == 0)
             {
                 ViewBag.MensajeInicializar = "No hay emprendimientos en el sistema, es necesario ";
             }
+            else
+            {
+                if (!String.IsNullOrEmpty(costoMin))
+                {
+                    decimal costoMinD;
+                    bool costoMinOk = decimal.TryParse(costoMin, out costoMinD);
+                    if (costoMinOk)
+                    {
+                        emprendimientos = emprendimientos.Where(e => e.Costo >= costoMinD);
+                    }
+                }
 
-            return View(db.Emprendimientos.ToList());
+                if (!String.IsNullOrEmpty(costoMax))
+                {
+                    decimal costoMaxD;
+                    bool costoMaxOk = decimal.TryParse(costoMax, out costoMaxD);
+                    if (costoMaxOk)
+                    {
+                        emprendimientos = emprendimientos.Where(e => e.Costo <= costoMaxD);
+                    }
+                }
+
+                if (!String.IsNullOrEmpty(tiempoMax))
+                {
+                    decimal tiempoMaxD;
+                    bool tiempoMaxOk = decimal.TryParse(tiempoMax, out tiempoMaxD);
+                    if (tiempoMaxOk)
+                    {
+                        emprendimientos = emprendimientos.Where(e => e.Tiempo <= tiempoMaxD);
+                    }
+                }
+
+                if (Session["Usuario"] != null)
+                {
+                    Financiador f = Session["Usuario"] as Financiador;
+                    if (f != null)
+                    {
+                        if (financiable != null && financiable == true)
+                        {
+                            emprendimientos = emprendimientos.Where(e => e.Costo <= f.MontoMax && e.Financiador == null);
+                        }
+                    }
+                }
+
+                ViewBag.CostoSortParm = sortOrder == "costo_asc" ? "costo_desc" : "costo_asc";
+
+                switch (sortOrder)
+                {
+                    case "costo_asc":
+                        emprendimientos = emprendimientos.OrderBy(e => e.Costo);
+                        break;
+                    case "costo_desc":
+                        emprendimientos = emprendimientos.OrderByDescending(e => e.Costo);
+                        break;
+                }
+            }
+
+            return View(emprendimientos.ToList());
         }
 
         // GET: Emprendimientoes/Details/5
+        [HttpGet]
         public ActionResult Details(int? id)
         {
+            ViewBag.FinanciarSuccess = "";
+            ViewBag.FinanciarError = "";
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Emprendimiento emprendimiento = db.Emprendimientos.Find(id);
+            //Emprendimiento emprendimiento = db.Emprendimientos.Find(id);
+            Emprendimiento emprendimiento = db.Emprendimientos.Include("Financiador")
+                                            .Where(e => e.Id == id).SingleOrDefault() as Emprendimiento;
+
             if (emprendimiento == null)
             {
                 return HttpNotFound();
@@ -79,19 +143,41 @@ namespace ObligatorioP3.Controllers
             return (RedirectToAction("Index"));
         }
 
-        // Pendiente: condiciones para financiar: usuario loggueado como financiador y monto accesible
-        public ActionResult Financiar(int? id)
+        public ActionResult Financiar()
         {
-            if (id == null)
+            ViewBag.FinanciarSuccess = "";
+            ViewBag.FinanciarError = "";
+
+            int financiadorId = (int)TempData["financiadorId"];
+            int emprendimientoId = (int)TempData["emprendimientoId"];
+
+            Emprendimiento emprendimiento = db.Emprendimientos.Find(emprendimientoId);
+            Financiador financiador = db.Usuarios.Find(financiadorId) as Financiador;
+
+            if (emprendimiento == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Emprendimiento emprendimiento = db.Emprendimientos.Find(id);
-            if (emprendimiento == null)
+            else
             {
-                return HttpNotFound();
+                if (emprendimiento.Financiador == null)
+                {
+                    if (emprendimiento.Costo <= financiador.MontoMax)
+                    {
+                        ViewBag.FinanciarSuccess = "Felicitaciones! Usted es el Financiador de este proyecto";
+                        // PENDIENTE: sacar estos mensajes y hacer el código que llama a la BD. Y al final tener una View de "congratulations"
+                    }
+                    else
+                    {
+                        ViewBag.FinanciarError = "Usted no puede permitirse el costo de este emprendimiento";
+                    }
+                }
+                else
+                {
+                    ViewBag.FinanciarError = "Este Emprendimiento ya cuenta con un Financiador";
+                }
             }
-            return View(emprendimiento);
+            return (RedirectToAction("Details", new { id = emprendimientoId }));
         }
 
         // Este método se generó solo, así que por las dudas lo dejo
