@@ -27,9 +27,11 @@
                     @{
                         if (Session["Usuario"] != null)
                         {
-                            ObligatorioP3.Models.Usuario usuario = Session["Usuario"] as ObligatorioP3.Models.Usuario;
+                            <li>@Html.ActionLink("Listado Mejores", "IndexRankMejores", "Emprendimientoes")</li>
+                        
+                                ObligatorioP3.Models.Usuario usuario = Session["Usuario"] as ObligatorioP3.Models.Usuario;
                             <li><p class="navbar-text">@usuario.Email</p></li>
-                            <li>@Html.ActionLink("Log out", "Logout", "Usuario")</li>
+                            <li>@Html.ActionLink("Log out", "Logout", "Usuario")</li>                            
                         }
                         else
                         {

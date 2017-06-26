@@ -27,6 +27,30 @@ namespace ObligatorioP3.Controllers
 
             return View(db.Emprendimientos.ToList());
         }
+        // GET:Mejores  Emprendimientoes
+        public ActionResult IndexRankMejores()
+        {
+            ActionResult ret = View();
+            List<Emprendimiento> emprendimientosOrdenados = db.Emprendimientos.OrderByDescending(e => e.PuntajeTotal).ToList();
+            int cantEmprend = emprendimientosOrdenados.Count();
+            if (cantEmprend == 0)
+            {
+                ViewBag.MensajeInicializar = "No hay emprendimientos en el sistema, es necesario ";
+            }
+            else
+            {
+                if (cantEmprend >= 10) {
+                    ret = View(emprendimientosOrdenados.Take(cantEmprend / 10).ToList());
+                }else
+                {
+                    /// Cambiar el 4 por 1 !
+                    ret = View(emprendimientosOrdenados.Take(4).ToList());
+                }
+                
+            }
+
+            return ret;
+        }
 
         // GET: Emprendimientoes/Details/5
         public ActionResult Details(int? id)
