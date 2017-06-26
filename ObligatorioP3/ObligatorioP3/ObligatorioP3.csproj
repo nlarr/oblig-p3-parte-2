@@ -234,6 +234,7 @@
     <Content Include="Views\Financiadors\Create.cshtml" />
     <Content Include="Views\Financiadors\Details.cshtml" />
     <Content Include="Views\Financiadors\Edit.cshtml" />
+    <Content Include="Views\Emprendimientoes\IndexRankMejores.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
