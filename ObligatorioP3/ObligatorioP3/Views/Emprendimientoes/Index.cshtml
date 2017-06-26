@@ -30,13 +30,18 @@
             @Html.TextBox("tiempoMax")
         </div>
 
-        if (Session["Usuario"] != null)
-        {
-        <div class="checkbox">
-            @Html.CheckBox("financiable")
-            <label for="financiable">Financiable por mí</label>
-        </div>
-        }
+            if (Session["Usuario"] != null)
+            {
+                ObligatorioP3.Models.Financiador financiador = Session["Usuario"] as ObligatorioP3.Models.Financiador;
+
+                if (financiador != null)
+                {
+                    <div class="checkbox">
+                        @Html.CheckBox("financiable")
+                        <label for="financiable">Financiable por mí</label>
+                    </div>
+                }
+            }
 
         <input type="submit" value="Filtrar" class="btn btn-default" />
         }
