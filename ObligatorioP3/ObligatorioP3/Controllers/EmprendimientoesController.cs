@@ -86,13 +86,36 @@ namespace ObligatorioP3.Controllers
         }
 
         // GET: Emprendimientoes/Details/5
-        public ActionResult Details(int? id)
+        [HttpGet]
+        public ActionResult Details(int? id, string mensaje)
         {
+            ViewBag.FinanciarSuccess = "";
+            ViewBag.FinanciarError = "";
+
+            if (!String.IsNullOrEmpty(mensaje))
+            {
+                switch (mensaje)
+                {
+                    case "success":
+                        ViewBag.FinanciarSuccess = "Felicitaciones! Usted es el Financiador de este proyecto";
+                        break;
+                    case "error_ya_financiado":
+                        ViewBag.FinanciarError = "Este Emprendimiento ya cuenta con un Financiador";
+                        break;
+                    case "error_costo_elevado":
+                        ViewBag.FinanciarError = "Usted no puede permitirse el costo de este emprendimiento";
+                        break;
+                }
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Emprendimiento emprendimiento = db.Emprendimientos.Find(id);
+            
+            Emprendimiento emprendimiento = db.Emprendimientos.Include("Financiador")
+                                            .Where(e => e.Id == id).SingleOrDefault() as Emprendimiento;
+
             if (emprendimiento == null)
             {
                 return HttpNotFound();
@@ -136,19 +159,42 @@ namespace ObligatorioP3.Controllers
             return (RedirectToAction("Index"));
         }
 
-        // Pendiente: condiciones para financiar: usuario loggueado como financiador y monto accesible
-        public ActionResult Financiar(int? id)
+        public ActionResult Financiar()
         {
-            if (id == null)
+            ViewBag.FinanciarSuccess = "";
+            ViewBag.FinanciarError = "";
+
+            int financiadorId = (int)TempData["financiadorId"];
+            int emprendimientoId = (int)TempData["emprendimientoId"];
+
+            Emprendimiento emprendimiento = db.Emprendimientos.Include("Financiador")
+                                            .Where(e => e.Id == emprendimientoId).SingleOrDefault() as Emprendimiento;
+            Financiador financiador = db.Usuarios.Find(financiadorId) as Financiador;
+
+            if (emprendimiento == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Emprendimiento emprendimiento = db.Emprendimientos.Find(id);
-            if (emprendimiento == null)
+            else
             {
-                return HttpNotFound();
+                if (emprendimiento.Financiador == null) // Lo traigo fresco de la BD para evitar problemas de concurrencia
+                {
+                    if (emprendimiento.Costo <= financiador.MontoMax)
+                    {
+                        emprendimiento.Financiador = financiador;
+                        db.SaveChanges();
+                        return (RedirectToAction("Details", new { id = emprendimientoId, mensaje = "success" }));
+                    }
+                    else
+                    {
+                        return (RedirectToAction("Details", new { id = emprendimientoId, mensaje = "error_costo_elevado" }));
+                    }
+                }
+                else
+                {
+                    return (RedirectToAction("Details", new { id = emprendimientoId, mensaje = "error_ya_financiado" }));
+                }
             }
-            return View(emprendimiento);
         }
 
         // Este método se generó solo, así que por las dudas lo dejo
