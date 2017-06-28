@@ -17,6 +17,7 @@ namespace ObligatorioP3.Controllers
         // GET: Financiadors/Create
         public ActionResult Create()
         {
+            ViewBag.Mensaje = "";
             return View();
         }
 
@@ -29,9 +30,20 @@ namespace ObligatorioP3.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Usuarios.Add(financiador);
-                db.SaveChanges();
-                return RedirectToAction("Index", "Emprendimientoes");
+                ViewBag.Mensaje = "";
+
+                var usuarioExistente = db.Usuarios.Where(u => u.Email == financiador.Email).SingleOrDefault();
+
+                if(usuarioExistente != null)
+                {
+                    ViewBag.Mensaje = "El mail utilizado para registrarse ya fue utilizado.";
+                }
+                else
+                {
+                    db.Usuarios.Add(financiador);
+                    db.SaveChanges();
+                    return RedirectToAction("Index", "Emprendimientoes");
+                }
             }
 
             return View(financiador);
