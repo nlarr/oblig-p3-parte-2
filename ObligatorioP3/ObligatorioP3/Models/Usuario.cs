@@ -14,6 +14,8 @@ namespace ObligatorioP3.Models
 
         [Required]
         [EmailAddress]
+        [Column(TypeName = "VARCHAR")]
+        [Index(IsUnique = true)]
         public string Email { get; set; }
 
         [Required]
