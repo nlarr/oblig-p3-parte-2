@@ -111,16 +111,33 @@ namespace ObligatorioP3.Controllers
 
         // GET: Emprendimientoes/Details/5
         [HttpGet]
-        public ActionResult Details(int? id)
+
+        public ActionResult Details(int? id, string mensaje)
         {
             ViewBag.FinanciarSuccess = "";
             ViewBag.FinanciarError = "";
+
+            if (!String.IsNullOrEmpty(mensaje))
+            {
+                switch (mensaje)
+                {
+                    case "success":
+                        ViewBag.FinanciarSuccess = "Felicitaciones! Usted es el Financiador de este proyecto";
+                        break;
+                    case "error_ya_financiado":
+                        ViewBag.FinanciarError = "Este Emprendimiento ya cuenta con un Financiador";
+                        break;
+                    case "error_costo_elevado":
+                        ViewBag.FinanciarError = "Usted no puede permitirse el costo de este emprendimiento";
+                        break;
+                }
+            }
 
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            //Emprendimiento emprendimiento = db.Emprendimientos.Find(id);
+
             Emprendimiento emprendimiento = db.Emprendimientos.Include("Financiador")
                                             .Where(e => e.Id == id).SingleOrDefault() as Emprendimiento;
 
@@ -175,7 +192,9 @@ namespace ObligatorioP3.Controllers
             int financiadorId = (int)TempData["financiadorId"];
             int emprendimientoId = (int)TempData["emprendimientoId"];
 
-            Emprendimiento emprendimiento = db.Emprendimientos.Find(emprendimientoId);
+            Emprendimiento emprendimiento = db.Emprendimientos.Include("Financiador")
+                                            .Where(e => e.Id == emprendimientoId).SingleOrDefault() as Emprendimiento;
+
             Financiador financiador = db.Usuarios.Find(financiadorId) as Financiador;
 
             if (emprendimiento == null)
@@ -184,24 +203,24 @@ namespace ObligatorioP3.Controllers
             }
             else
             {
-                if (emprendimiento.Financiador == null)
+                if (emprendimiento.Financiador == null) // Lo traigo fresco de la BD para evitar problemas de concurrencia
                 {
                     if (emprendimiento.Costo <= financiador.MontoMax)
                     {
-                        ViewBag.FinanciarSuccess = "Felicitaciones! Usted es el Financiador de este proyecto";
-                        // PENDIENTE: sacar estos mensajes y hacer el código que llama a la BD. Y al final tener una View de "congratulations"
+                        emprendimiento.Financiador = financiador;
+                        db.SaveChanges();
+                        return (RedirectToAction("Details", new { id = emprendimientoId, mensaje = "success" }));
                     }
                     else
                     {
-                        ViewBag.FinanciarError = "Usted no puede permitirse el costo de este emprendimiento";
+                        return (RedirectToAction("Details", new { id = emprendimientoId, mensaje = "error_costo_elevado" }));
                     }
                 }
                 else
                 {
-                    ViewBag.FinanciarError = "Este Emprendimiento ya cuenta con un Financiador";
+                    return (RedirectToAction("Details", new { id = emprendimientoId, mensaje = "error_ya_financiado" }));
                 }
             }
-            return (RedirectToAction("Details", new { id = emprendimientoId }));
         }
 
         // Este método se generó solo, así que por las dudas lo dejo
