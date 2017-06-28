@@ -13,6 +13,8 @@ namespace ObligatorioP3.Models
         public int Id { get; set; }
 
         [Required]
+        [Column(TypeName = "VARCHAR")]
+        [Index(IsUnique = true)]
         public string Titulo { get; set; }
 
         [Required]

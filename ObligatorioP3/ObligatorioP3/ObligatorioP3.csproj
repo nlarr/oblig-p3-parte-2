@@ -158,7 +158,6 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\EmprendimientoesController.cs" />
     <Compile Include="Controllers\FinanciadorsController.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -178,6 +177,10 @@
     <Compile Include="Migrations\201706202339311_cosaRara.cs" />
     <Compile Include="Migrations\201706202339311_cosaRara.Designer.cs">
       <DependentUpon>201706202339311_cosaRara.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706281510300_agregarConstraintsUnique.cs" />
+    <Compile Include="Migrations\201706281510300_agregarConstraintsUnique.Designer.cs">
+      <DependentUpon>201706281510300_agregarConstraintsUnique.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Emprendimiento.cs" />
@@ -225,15 +228,10 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Usuario\Login.cshtml" />
     <Content Include="Views\Emprendimientoes\Details.cshtml" />
     <Content Include="Views\Emprendimientoes\Index.cshtml" />
     <Content Include="Views\Financiadors\Create.cshtml" />
-    <Content Include="Views\Financiadors\Details.cshtml" />
-    <Content Include="Views\Financiadors\Edit.cshtml" />
     <Content Include="Views\Emprendimientoes\IndexRankMejores.cshtml" />
     <Content Include="Views\Emprendimientoes\MisEmprendimientosFinanciados.cshtml" />
     <Content Include="Views\Emprendimientoes\EmprendimientosFinanciados.cshtml" />
@@ -261,6 +259,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706202339311_cosaRara.resx">
       <DependentUpon>201706202339311_cosaRara.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706281510300_agregarConstraintsUnique.resx">
+      <DependentUpon>201706281510300_agregarConstraintsUnique.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
