@@ -10,6 +10,7 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
+        @{ ObligatorioP3.Models.Usuario usuario = Session["Usuario"] as ObligatorioP3.Models.Usuario; }
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -22,25 +23,23 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Inicio", "Index", "Emprendimientoes")</li>
+                    @{
+                        ObligatorioP3.Models.Financiador financiador = usuario as ObligatorioP3.Models.Financiador;
+
+                        if (financiador != null)
+                        {
+                            TempData["financiadorId"] = financiador.Id;
+                            <li>@Html.ActionLink("Mis Emprendimientos", "EmprendimientosFinanciados", "Emprendimientoes")</li>
+                            <li>@Html.ActionLink("Listado Mejores", "IndexRankMejores", "Emprendimientoes")</li>
+                        }
+                    }
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @{
-                        if (Session["Usuario"] != null)
+                        if (usuario != null)
                         {
-                            <li>@Html.ActionLink("Mis Emprendimientos", "EmprendimientosFinanciados", "Emprendimientoes")</li>
-                            @Html.ActionLink("Back to List", "Index") 
-                            ObligatorioP3.Models.Usuario usuario = Session["Usuario"] as ObligatorioP3.Models.Usuario;                          
-                            ObligatorioP3.Models.Financiador financiador = Session["Usuario"] as ObligatorioP3.Models.Financiador;
-                            if (financiador != null)
-                            {                                  
-                                // TempData["emprendimientoId"] = Model.Id;
-                                TempData["financiadorId"] = financiador.Id;
-                                  //  @Html.ActionLink("Financiar", "Financiar", "Emprendimientoes")
-                            }                            
-                            <li>@Html.ActionLink("Listado Mejores", "IndexRankMejores", "Emprendimientoes")</li>                            
-                            
                             <li><p class="navbar-text">@usuario.Email</p></li>
-                            <li>@Html.ActionLink("Log out", "Logout", "Usuario")</li>                            
+                            <li>@Html.ActionLink("Log out", "Logout", "Usuario")</li>
                         }
                         else
                         {
