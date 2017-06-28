@@ -15,7 +15,6 @@ namespace ObligatorioP3.ViewModels
 {
     public class UsuarioViewModel
     {
-        [Key]
         [Required]
         [EmailAddress]
         public string Email { get; set; }

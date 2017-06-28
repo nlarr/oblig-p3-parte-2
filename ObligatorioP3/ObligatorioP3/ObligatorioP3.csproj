@@ -182,6 +182,10 @@
     <Compile Include="Migrations\201706281510300_agregarConstraintsUnique.Designer.cs">
       <DependentUpon>201706281510300_agregarConstraintsUnique.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201706281609249_RemoverTablaUsuarioViewModel.cs" />
+    <Compile Include="Migrations\201706281609249_RemoverTablaUsuarioViewModel.Designer.cs">
+      <DependentUpon>201706281609249_RemoverTablaUsuarioViewModel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Emprendimiento.cs" />
     <Compile Include="Models\Financiador.cs" />
@@ -262,6 +266,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201706281510300_agregarConstraintsUnique.resx">
       <DependentUpon>201706281510300_agregarConstraintsUnique.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706281609249_RemoverTablaUsuarioViewModel.resx">
+      <DependentUpon>201706281609249_RemoverTablaUsuarioViewModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
