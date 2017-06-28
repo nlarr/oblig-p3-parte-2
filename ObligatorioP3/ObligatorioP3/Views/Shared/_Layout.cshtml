@@ -27,9 +27,18 @@
                     @{
                         if (Session["Usuario"] != null)
                         {
-                            <li>@Html.ActionLink("Listado Mejores", "IndexRankMejores", "Emprendimientoes")</li>
-                        
-                                ObligatorioP3.Models.Usuario usuario = Session["Usuario"] as ObligatorioP3.Models.Usuario;
+                            <li>@Html.ActionLink("Mis Emprendimientos", "EmprendimientosFinanciados", "Emprendimientoes")</li>
+                            @Html.ActionLink("Back to List", "Index") 
+                            ObligatorioP3.Models.Usuario usuario = Session["Usuario"] as ObligatorioP3.Models.Usuario;                          
+                            ObligatorioP3.Models.Financiador financiador = Session["Usuario"] as ObligatorioP3.Models.Financiador;
+                            if (financiador != null)
+                            {                                  
+                                // TempData["emprendimientoId"] = Model.Id;
+                                TempData["financiadorId"] = financiador.Id;
+                                  //  @Html.ActionLink("Financiar", "Financiar", "Emprendimientoes")
+                            }                            
+                            <li>@Html.ActionLink("Listado Mejores", "IndexRankMejores", "Emprendimientoes")</li>                            
+                            
                             <li><p class="navbar-text">@usuario.Email</p></li>
                             <li>@Html.ActionLink("Log out", "Logout", "Usuario")</li>                            
                         }
