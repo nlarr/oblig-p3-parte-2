@@ -15,6 +15,27 @@ namespace ObligatorioP3.Controllers
     {
         private ObliEmprendimientosContext db = new ObliEmprendimientosContext();
 
+        // GET: Emprendimientos finaciados por autenticado
+        public ActionResult EmprendimientosFinanciados()
+        {
+            ActionResult ret = View();
+            ViewBag.MensajeNoTiene = "";
+            int financiadorId = (int)TempData["financiadorId"];
+            Financiador financiador = db.Usuarios.Find(financiadorId) as Financiador;
+            var emprendimientosMios = from e in db.Emprendimientos.Include("Financiador") select e;
+            emprendimientosMios = emprendimientosMios.Where(e => e.Financiador.Id == financiadorId);
+            if (emprendimientosMios.Count() == 0)
+            {
+                ViewBag.MensajeNoTiene = "No tienes ningun emprendimiento financiado";
+            }
+            else
+            {
+                ret = View(emprendimientosMios.ToList());
+            }
+
+            return ret;
+        }
+
         // GET: Emprendimientoes
         public ActionResult Index(string sortOrder, string costoMin, string costoMax, string tiempoMax, bool? financiable)
         {
@@ -96,16 +117,10 @@ namespace ObligatorioP3.Controllers
             }
             else
             {
-                if (cantEmprend >= 10) {
-                    ret = View(emprendimientosOrdenados.Take(cantEmprend / 10).ToList());
-                }else
-                {
-                    /// Cambiar el 4 por 1 !
-                    ret = View(emprendimientosOrdenados.Take(4).ToList());
-                }
-                
+                decimal res = (decimal)cantEmprend / 10;
+                int valor = (int)Math.Ceiling(res);
+                ret = View(emprendimientosOrdenados.Take(valor).ToList());
             }
-
             return ret;
         }
 
