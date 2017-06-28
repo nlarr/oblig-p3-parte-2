@@ -14,24 +14,25 @@ namespace ObligatorioP3.Controllers
     public class EmprendimientoesController : Controller
     {
         private ObliEmprendimientosContext db = new ObliEmprendimientosContext();
-        
+
         // GET: Emprendimientos finaciados por autenticado
         public ActionResult EmprendimientosFinanciados()
         {
             ActionResult ret = View();
             ViewBag.MensajeNoTiene = "";
             int financiadorId = (int)TempData["financiadorId"];
-            Financiador financiador = db.Usuarios.Find(financiadorId) as Financiador;            
+            Financiador financiador = db.Usuarios.Find(financiadorId) as Financiador;
             var emprendimientosMios = from e in db.Emprendimientos.Include("Financiador") select e;
             emprendimientosMios = emprendimientosMios.Where(e => e.Financiador.Id == financiadorId);
             if (emprendimientosMios.Count() == 0)
             {
                 ViewBag.MensajeNoTiene = "No tienes ningun emprendimiento financiado";
-            }else
-            {
-                ret=View(emprendimientosMios.ToList());
             }
-            
+            else
+            {
+                ret = View(emprendimientosMios.ToList());
+            }
+
             return ret;
         }
 
@@ -116,15 +117,10 @@ namespace ObligatorioP3.Controllers
             }
             else
             {
-                if (cantEmprend >= 10) {
-                    ret = View(emprendimientosOrdenados.Take(cantEmprend / 10).ToList());
-                }else
-                {
-                    ret = View(emprendimientosOrdenados.Take(1).ToList());
-                }
-                
+                decimal res = (decimal)cantEmprend / 10;
+                int valor = (int)Math.Ceiling(res);
+                ret = View(emprendimientosOrdenados.Take(valor).ToList());
             }
-
             return ret;
         }
 
