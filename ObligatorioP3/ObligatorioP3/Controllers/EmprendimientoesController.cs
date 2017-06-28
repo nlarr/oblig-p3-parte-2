@@ -150,7 +150,7 @@ namespace ObligatorioP3.Controllers
 
         public ActionResult Inicializar()
         {
-            string path = Server.MapPath("~/ArchivoTexto/WCFarchivo.log");
+            string path = Server.MapPath("~/ArchivoTexto/WCFarchivo.txt");
             StreamReader sReader = new StreamReader(path);
             string linea = "";
 

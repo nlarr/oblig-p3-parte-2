@@ -14,7 +14,6 @@ namespace ObligatorioP3.Models
 
         public System.Data.Entity.DbSet<ObligatorioP3.ViewModels.UsuarioViewModel> UsuarioViewModels { get; set; }
 
-        public ObliEmprendimientosContext() : base("obligatorioPancho") { }
-        //public ObliEmprendimientosContext() : base("obligatorioNati") { }
+        public ObliEmprendimientosContext() : base("obligatorio") { }
     }
 }

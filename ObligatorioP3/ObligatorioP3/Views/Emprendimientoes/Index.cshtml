@@ -15,7 +15,7 @@
 
     <div class="pull-right" style="margin-top: 10px">
         @using (Html.BeginForm("Index", "Emprendimientoes",
-                FormMethod.Post, new { @class = "form-inline" }))
+        FormMethod.Post, new { @class = "form-inline" }))
         {
         <div class="form-group">
             <label for="costoMin">Costo mínimo:</label>
@@ -50,6 +50,7 @@
 <div class="clearfix"></div>
 <table class="table" style="margin-top: 10px">
     <tr>
+        <th></th>
         <th>
             @Html.DisplayNameFor(model => model.Titulo)
         </th>
@@ -67,9 +68,13 @@
         </th>
         <th></th>
     </tr>
-
+@{ int i = 0; }
 @foreach (var item in Model) {
+    i++;
     <tr>
+        <td>
+            @i
+        </td>
         <td>
             @Html.DisplayFor(modelItem => item.Titulo)
         </td>
