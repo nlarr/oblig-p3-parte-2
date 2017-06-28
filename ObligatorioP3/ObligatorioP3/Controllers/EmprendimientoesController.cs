@@ -92,7 +92,7 @@ namespace ObligatorioP3.Controllers
 
                 ViewBag.CostoSortParm = sortOrder == "costo_asc" ? "costo_desc" : "costo_asc";
 
-                switch (sortOrder)
+                switch (ViewBag.CostoSortParm as string)
                 {
                     case "costo_asc":
                         emprendimientos = emprendimientos.OrderBy(e => e.Costo);
@@ -101,6 +101,8 @@ namespace ObligatorioP3.Controllers
                         emprendimientos = emprendimientos.OrderByDescending(e => e.Costo);
                         break;
                 }
+
+                return View(emprendimientos.ToList());
             }
 
             return View(emprendimientos.ToList());
