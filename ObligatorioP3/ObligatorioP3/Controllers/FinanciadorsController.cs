@@ -35,6 +35,8 @@ namespace ObligatorioP3.Controllers
             return View();
         }
 
+        
+
         // POST: Financiadors/Create
         // Para protegerse de ataques de publicación excesiva, habilite las propiedades específicas a las que desea enlazarse. Para obtener 
         // más información vea http://go.microsoft.com/fwlink/?LinkId=317598.

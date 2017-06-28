@@ -84,9 +84,34 @@ namespace ObligatorioP3.Controllers
 
             return View(emprendimientos.ToList());
         }
+        // GET:Mejores  Emprendimientoes
+        public ActionResult IndexRankMejores()
+        {
+            ActionResult ret = View();
+            List<Emprendimiento> emprendimientosOrdenados = db.Emprendimientos.OrderByDescending(e => e.PuntajeTotal).ToList();
+            int cantEmprend = emprendimientosOrdenados.Count();
+            if (cantEmprend == 0)
+            {
+                ViewBag.MensajeInicializar = "No hay emprendimientos en el sistema, es necesario ";
+            }
+            else
+            {
+                if (cantEmprend >= 10) {
+                    ret = View(emprendimientosOrdenados.Take(cantEmprend / 10).ToList());
+                }else
+                {
+                    /// Cambiar el 4 por 1 !
+                    ret = View(emprendimientosOrdenados.Take(4).ToList());
+                }
+                
+            }
+
+            return ret;
+        }
 
         // GET: Emprendimientoes/Details/5
         [HttpGet]
+
         public ActionResult Details(int? id, string mensaje)
         {
             ViewBag.FinanciarSuccess = "";
@@ -112,7 +137,7 @@ namespace ObligatorioP3.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            
+
             Emprendimiento emprendimiento = db.Emprendimientos.Include("Financiador")
                                             .Where(e => e.Id == id).SingleOrDefault() as Emprendimiento;
 
@@ -169,6 +194,7 @@ namespace ObligatorioP3.Controllers
 
             Emprendimiento emprendimiento = db.Emprendimientos.Include("Financiador")
                                             .Where(e => e.Id == emprendimientoId).SingleOrDefault() as Emprendimiento;
+
             Financiador financiador = db.Usuarios.Find(financiadorId) as Financiador;
 
             if (emprendimiento == null)
